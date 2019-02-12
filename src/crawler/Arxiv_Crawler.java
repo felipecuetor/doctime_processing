@@ -6,10 +6,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -75,7 +80,6 @@ public class Arxiv_Crawler extends WebCrawler {
 				return true;
 			} else {
 				if (href.startsWith("https://arxiv.org/abs/")) {
-					System.out.println("Found new doc");
 					return true;
 				}
 				return false;
@@ -92,15 +96,20 @@ public class Arxiv_Crawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		String url = page.getWebURL().getURL();
+		HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+		Map<String, String> metaDataMap = htmlParseData.getMetaTags();
+		String pureHTML = htmlParseData.getHtml();
+		Document doc = Jsoup.parse(pureHTML);
+		Element title = doc.select("h1.title").first();
 		if (url.startsWith("https://arxiv.org/abs/")) {
 			try {
 				String path = "../data/arxiv_output.csv";
-				String str = url + "\n";
+				String str = title.text() + "\n";
 				BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 				writer.append(' ');
 				writer.append(str);
 				writer.close();
-				System.out.println(url);
+//				System.out.println(tester);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

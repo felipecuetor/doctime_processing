@@ -11,14 +11,11 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 public class Arxiv_Crawler_Controller {
 	public static void main(String[] args) {
+		new Arxiv_Crawler_Controller();
+	}
+	
+	public Arxiv_Crawler_Controller() {
 		try {
-//			if (args.length != 2) {
-//				System.out.println("Needed parameters: ");
-//				System.out.println("\t rootFolder (it will contain intermediate crawl data)");
-//				System.out.println("\t numberOfCralwers (number of concurrent threads)");
-//				return;
-//			}
-
 			/*
 			 * crawlStorageFolder is a folder where intermediate crawl data is stored.
 			 */
@@ -38,19 +35,19 @@ public class Arxiv_Crawler_Controller {
 			 * Be polite: Make sure that we don't send more than 1 request per second (1000
 			 * milliseconds between requests).
 			 */
-			config.setPolitenessDelay(1000);
+			config.setPolitenessDelay(500);
 
 			/*
 			 * You can set the maximum crawl depth here. The default value is -1 for
 			 * unlimited depth
 			 */
-			config.setMaxDepthOfCrawling(5);
+			config.setMaxDepthOfCrawling(6);
 
 			/*
 			 * You can set the maximum number of pages to crawl. The default value is -1 for
 			 * unlimited number of pages
 			 */
-			config.setMaxPagesToFetch(1000);
+			config.setMaxPagesToFetch(-1);
 
 			/**
 			 * Do you want crawler4j to crawl also binary data ? example: the contents of
@@ -108,4 +105,5 @@ public class Arxiv_Crawler_Controller {
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -12,15 +12,15 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
-public class Arxiv_Crawler_Controller {
+public class Dblp_Crawler_Controller {
 	public static void main(String[] args) {
-		new Arxiv_Crawler_Controller();
+		new Dblp_Crawler_Controller();
 	}
 	
-	public Arxiv_Crawler_Controller() {
+	public Dblp_Crawler_Controller() {
 		try {
 			String columns = "title,authors,date,context,external_reference,url";
-			String path = "../data/arxiv_output.csv";
+			String path = "../data/dblp_output.csv";
 			String str = columns + "\n";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 			writer.append(str);
@@ -28,7 +28,7 @@ public class Arxiv_Crawler_Controller {
 			/*
 			 * crawlStorageFolder is a folder where intermediate crawl data is stored.
 			 */
-			String crawlStorageFolder = "../../../data/Arxiv_Crawler_Storage";
+			String crawlStorageFolder = "../../../data/Dblp_Crawler_Storage";
 
 			/*
 			 * numberOfCrawlers shows the number of concurrent threads that should be
@@ -50,7 +50,7 @@ public class Arxiv_Crawler_Controller {
 			 * You can set the maximum crawl depth here. The default value is -1 for
 			 * unlimited depth
 			 */
-			config.setMaxDepthOfCrawling(6);
+			config.setMaxDepthOfCrawling(-1);
 
 			/*
 			 * You can set the maximum number of pages to crawl. The default value is -1 for
@@ -101,15 +101,13 @@ public class Arxiv_Crawler_Controller {
 			 * are fetched and then the crawler starts following links which are found in
 			 * these pages
 			 */
-			controller.addSeed("https://arxiv.org/");
-//			controller.addSeed("https://www.ics.uci.edu/~lopes/");
-//			controller.addSeed("https://www.ics.uci.edu/~welling/");
+			controller.addSeed("https://dblp.org/db/conf/");
 
 			/*
 			 * Start the crawl. This is a blocking operation, meaning that your code will
 			 * reach the line after this only when crawling is finished.
 			 */
-			controller.start(Arxiv_Crawler.class, numberOfCrawlers);
+			controller.start(Dblp_Crawler.class, numberOfCrawlers);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

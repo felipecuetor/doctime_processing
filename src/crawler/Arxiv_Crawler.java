@@ -121,26 +121,13 @@ public class Arxiv_Crawler extends WebCrawler {
 				try {
 					Element doi_element = doc.select("td.msc_classes").append("").first();
 					doi = adapter.clean(doi_element.text());
-					external_reference += "doi:"+doi +";";
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				try {
-					Element ext_link_elem = doc.select("td.arxivid").append("").first();
-					String ext_link = adapter.clean(ext_link_elem.text());
-					external_reference += ext_link;
-					if (external_reference.equals(";")) {
-						external_reference = "";
-					}
-					if(external_reference.endsWith(";")) {
-						external_reference = external_reference.substring(0,external_reference.length()-1);
-					}
+					external_reference += "doi:"+doi;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 
 				String path = "../data/arxiv_output.csv";
-				String str = title + "," + authors + "," + date + "," + context + "," + external_reference + "\n";
+				String str = title + "," + authors + "," + date + "," + context + "," + external_reference + "," + adapter.clean(url) + "\n";
 				BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 				writer.append(str);
 				writer.close();

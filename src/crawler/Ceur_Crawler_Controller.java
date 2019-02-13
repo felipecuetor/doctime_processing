@@ -1,5 +1,8 @@
 package crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -9,12 +12,12 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 public class Ceur_Crawler_Controller {
 	public static void main(String[] args) {
 		try {
-//			if (args.length != 2) {
-//				System.out.println("Needed parameters: ");
-//				System.out.println("\t rootFolder (it will contain intermediate crawl data)");
-//				System.out.println("\t numberOfCralwers (number of concurrent threads)");
-//				return;
-//			}
+			String columns = "title,authors,date,context,external_reference,url";
+			String path = "../data/ceur_output.csv";
+			String str = columns + "\n";
+			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+			writer.append(str);
+			writer.close();
 
 			/*
 			 * crawlStorageFolder is a folder where intermediate crawl data is stored.
@@ -42,7 +45,7 @@ public class Ceur_Crawler_Controller {
 			 * You can set the maximum crawl depth here. The default value is -1 for
 			 * unlimited depth
 			 */
-			config.setMaxDepthOfCrawling(2);
+			config.setMaxDepthOfCrawling(5);
 
 			/*
 			 * You can set the maximum number of pages to crawl. The default value is -1 for

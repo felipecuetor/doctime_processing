@@ -21,14 +21,16 @@ public class Ceur_Crawler extends WebCrawler{
 		String href = url.getURL().toLowerCase();
 		String currentPage = referringPage.getWebURL().getURL();
 		if (currentPage.equals("http://ceur-ws.org/")) {
-			if (href.startsWith("http://ceur-ws.org/Vol")) {
+			System.out.println(href);
+			if (href.startsWith("http://ceur-ws.org/vol")) {
+				
 				return true;
 			}
 			else {
 				return false;
 			}
 		}
-		return href.startsWith("http://ceur-ws.org/Vol");
+		return false;
 	}
 	
 	@Override
@@ -50,7 +52,7 @@ public class Ceur_Crawler extends WebCrawler{
 		if (url.startsWith("http://ceur-ws.org/Vol")) {
 			try {
 				String path = "../data/ceur_output.csv";
-				String str = title.text() + "\n";
+				String str = title + "\n";
 				BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 				writer.append(' ');
 				writer.append(str);

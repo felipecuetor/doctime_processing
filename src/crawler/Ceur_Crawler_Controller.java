@@ -36,12 +36,13 @@ public class Ceur_Crawler_Controller {
 			 * milliseconds between requests).
 			 */
 			config.setPolitenessDelay(1000);
+			config.setMaxDownloadSize(1000000000);
 
 			/*
 			 * You can set the maximum crawl depth here. The default value is -1 for
 			 * unlimited depth
 			 */
-			config.setMaxDepthOfCrawling(5);
+			config.setMaxDepthOfCrawling(2);
 
 			/*
 			 * You can set the maximum number of pages to crawl. The default value is -1 for
@@ -70,6 +71,7 @@ public class Ceur_Crawler_Controller {
 			 * need to delete the contents of rootFolder manually.
 			 */
 			config.setResumableCrawling(false);
+			
 
 			/*
 			 * Set this to true if you want crawling to stop whenever an unexpected error

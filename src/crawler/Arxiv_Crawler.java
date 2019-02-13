@@ -101,36 +101,39 @@ public class Arxiv_Crawler extends WebCrawler {
 		Map<String, String> metaDataMap = htmlParseData.getMetaTags();
 		String pureHTML = htmlParseData.getHtml();
 		Document doc = Jsoup.parse(pureHTML);
-
+		Simple_data_csv_adapter adapter = new Simple_data_csv_adapter();
 		if (url.startsWith("https://arxiv.org/abs/")) {
 			try {
-				String title = doc.select("h1.title").first().text().substring(6);
+				String title = adapter.clean(doc.select("h1.title").first().text().substring(6));
 				Elements authors_list = doc.select("div.authors").select("a");
 				Iterator authors_iter = authors_list.iterator();
 				String authors = "";
 				while (authors_iter.hasNext()) {
 					Element current_author = (Element) authors_iter.next();
-					String current_author_string = current_author.text();
+					String current_author_string = adapter.clean(current_author.text());
 					authors += current_author_string + ";";
 				}
 				authors = authors.substring(0, authors.length() - 1);
-				String date = metaDataMap.get("citation_date");
-				String context = doc.select("td.subjects").first().text();
+				String date = adapter.clean(metaDataMap.get("citation_date"));
+				String context = adapter.clean(doc.select("td.subjects").first().text());
 				String external_reference="";
 				String doi = "";
 				try {
 					Element doi_element = doc.select("td.msc_classes").append("").first();
-					doi = doi_element.text();
-					external_reference += doi +";";
+					doi = adapter.clean(doi_element.text());
+					external_reference += "doi:"+doi +";";
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				try {
 					Element ext_link_elem = doc.select("td.arxivid").append("").first();
-					String ext_link = ext_link_elem.text();
+					String ext_link = adapter.clean(ext_link_elem.text());
 					external_reference += ext_link;
 					if (external_reference.equals(";")) {
 						external_reference = "";
+					}
+					if(external_reference.endsWith(";")) {
+						external_reference = external_reference.substring(0,external_reference.length()-1);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

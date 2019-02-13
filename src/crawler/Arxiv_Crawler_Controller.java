@@ -1,5 +1,8 @@
 package crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
@@ -16,6 +19,12 @@ public class Arxiv_Crawler_Controller {
 	
 	public Arxiv_Crawler_Controller() {
 		try {
+			String columns = "title,authors,date,context,external_reference";
+			String path = "../data/arxiv_output.csv";
+			String str = columns + "\n";
+			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+			writer.append(str);
+			writer.close();
 			/*
 			 * crawlStorageFolder is a folder where intermediate crawl data is stored.
 			 */

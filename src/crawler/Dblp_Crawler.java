@@ -99,7 +99,7 @@ public class Dblp_Crawler extends WebCrawler {
 							}
 							String path = "../data/dblp_output.csv";
 							String str = title + "," + authors + "," + date + "," + context + "," + external_reference
-									+ "," + url + "\n";
+									+ "," + adapter.clean(url) + "\n";
 							BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 							writer.append(str);
 							writer.close();

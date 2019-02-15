@@ -1,4 +1,4 @@
-package crawler;
+package crawler.dblp;
 
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 
@@ -21,8 +21,9 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import utility.Simple_data_csv_adapter;
 
-public class Dblp_Crawler extends WebCrawler {
+public class Dblp_Crawler_Jour extends WebCrawler {
 	public int pos_current = 0;
 
 	/**
@@ -33,12 +34,14 @@ public class Dblp_Crawler extends WebCrawler {
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 		String current_page = referringPage.getWebURL().getURL();
-		if (href.contains("prefix")) {
+		int sub_dir_count = href.length() - href.replace("/", "").length();
+		if (href.contains("prefix")&&sub_dir_count>6) {
 			return false;
 		}
-		if (current_page.contentEquals("https://dblp.org/db/conf/")
-				| current_page.startsWith("https://dblp.org/db/conf/?pos=")) {
-			if (href.startsWith("https://dblp.org/db/conf/") && href.length() > "https://dblp.org/db/conf/".length()) {
+		if (current_page.contentEquals("https://dblp.org/db/journals/")
+				| current_page.startsWith("https://dblp.org/db/journals/?pos=")) {
+			if (href.startsWith("https://dblp.org/db/journals/")
+					&& href.length() > "https://dblp.org/db/journals/".length()) {
 				if (href.contains("pos=")) {
 					String[] query_split = href.split("\\?");
 					String pos_number = query_split[1].replace("pos=", "");
@@ -63,7 +66,8 @@ public class Dblp_Crawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		String url = page.getWebURL().getURL();
-		if (url.startsWith("https://dblp.org/db/conf/") && url.length() > "https://dblp.org/db/conf/".length()) {
+		int sub_dir_count = url.length() - url.replace("/", "").length();
+		if (url.startsWith("https://dblp.org/db/journals/") && sub_dir_count == 6) {
 			if (!url.contains("pos=")) {
 				HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 				Map<String, String> metaDataMap = htmlParseData.getMetaTags();
@@ -88,16 +92,21 @@ public class Dblp_Crawler extends WebCrawler {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-							String external_reference = "idbn:"
-									+ adapter.clean(data.select("span[itemprop = isbn]").first().text());
+							String external_reference = "";
+							try {
+								external_reference = "idbn:"
+										+ adapter.clean(data.select("span[itemprop = isbn]").first().text());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 							String authors = "";
 							Elements authors_list = data.select("span[itemprop = author]");
 							Iterator author_iter = authors_list.iterator();
 							while (author_iter.hasNext()) {
 								String current_author = adapter.clean(((Element) author_iter.next()).text());
-								authors += current_author;
+								authors += current_author+";";
 							}
-							String path = "../data/dblp_output.csv";
+							String path = "../data/dblp_output_jour.csv";
 							String str = title + "," + authors + "," + date + "," + context + "," + external_reference
 									+ "," + adapter.clean(url) + "\n";
 							BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));

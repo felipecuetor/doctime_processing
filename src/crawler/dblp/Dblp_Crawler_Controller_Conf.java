@@ -1,7 +1,10 @@
-package crawler;
+package crawler.dblp;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -9,20 +12,23 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
-public class Ceur_Crawler_Controller {
+public class Dblp_Crawler_Controller_Conf {
 	public static void main(String[] args) {
+		new Dblp_Crawler_Controller_Conf();
+	}
+	
+	public Dblp_Crawler_Controller_Conf() {
 		try {
 			String columns = "title,authors,date,context,external_reference,url";
-			String path = "../data/ceur_output.csv";
+			String path = "../data/dblp_output.csv";
 			String str = columns + "\n";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 			writer.append(str);
 			writer.close();
-
 			/*
 			 * crawlStorageFolder is a folder where intermediate crawl data is stored.
 			 */
-			String crawlStorageFolder = "../data/Ceur_Crawler_Storage";
+			String crawlStorageFolder = "../../../data/Dblp_Crawler_Storage";
 
 			/*
 			 * numberOfCrawlers shows the number of concurrent threads that should be
@@ -39,13 +45,12 @@ public class Ceur_Crawler_Controller {
 			 * milliseconds between requests).
 			 */
 			config.setPolitenessDelay(2000);
-			config.setMaxDownloadSize(1000000000);
 
 			/*
 			 * You can set the maximum crawl depth here. The default value is -1 for
 			 * unlimited depth
 			 */
-			config.setMaxDepthOfCrawling(5);
+			config.setMaxDepthOfCrawling(-1);
 
 			/*
 			 * You can set the maximum number of pages to crawl. The default value is -1 for
@@ -74,7 +79,6 @@ public class Ceur_Crawler_Controller {
 			 * need to delete the contents of rootFolder manually.
 			 */
 			config.setResumableCrawling(false);
-			
 
 			/*
 			 * Set this to true if you want crawling to stop whenever an unexpected error
@@ -97,17 +101,16 @@ public class Ceur_Crawler_Controller {
 			 * are fetched and then the crawler starts following links which are found in
 			 * these pages
 			 */
-			controller.addSeed("http://ceur-ws.org/");
-//			controller.addSeed("https://www.ics.uci.edu/~lopes/");
-//			controller.addSeed("https://www.ics.uci.edu/~welling/");
+			controller.addSeed("https://dblp.org/db/conf/");
 
 			/*
 			 * Start the crawl. This is a blocking operation, meaning that your code will
 			 * reach the line after this only when crawling is finished.
 			 */
-			controller.start(Ceur_Crawler.class, numberOfCrawlers);
+			controller.start(Dblp_Crawler_Conf.class, numberOfCrawlers);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }

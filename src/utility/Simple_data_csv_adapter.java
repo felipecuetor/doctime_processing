@@ -1,4 +1,4 @@
-package crawler;
+package utility;
 
 public class Simple_data_csv_adapter {
 	public String clean(String input) {

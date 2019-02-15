@@ -1,4 +1,4 @@
-package crawler;
+package crawler.ceur;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +12,7 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import utility.Simple_data_csv_adapter;
 
 public class Ceur_Crawler extends WebCrawler {
 

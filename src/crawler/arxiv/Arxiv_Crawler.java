@@ -41,12 +41,18 @@ public class Arxiv_Crawler extends WebCrawler {
 				| href.endsWith("/current/") | href.endsWith("/new/") | href.endsWith("/contact")
 				| href.endsWith("/contact/") | href.endsWith("/form/") | href.endsWith("/form")
 				| href.endsWith("/robots") | href.endsWith("/robots/") | href.contains("help") | href.contains("/css/")
-				| href.contains("/bibex/")) {
+				| href.contains("/bibex/") | href.contains("/ps/") | href.contains("search")
+				| href.contains("format")) {
 			return false;
 		}
 
 		if (current_page.equals("https://arxiv.org/")) {
-			if (href.startsWith("https://arxiv.org/archive")&&!href.startsWith("https://arxiv.org/archive/eess")) {
+			// https://arxiv.org/archive/
+			// https://arxiv.org/archive/math
+			// https://arxiv.org/archive/nlin
+			// https://arxiv.org/archive/math-ph
+			if (href.startsWith("https://arxiv.org/archive/math-ph")
+					&& !href.startsWith("https://arxiv.org/archive/eess")) {
 				return true;
 			} else {
 				return false;
@@ -79,7 +85,14 @@ public class Arxiv_Crawler extends WebCrawler {
 				if (href.startsWith("https://arxiv.org/abs/")) {
 					return false;
 				}
-				return true;
+				if (href.contains("pdf")) {
+					return false;
+				}
+				if (href.contains("show=")) {
+					return true;
+				}
+
+				return false;
 			} else {
 				if (href.startsWith("https://arxiv.org/abs/")) {
 					return true;

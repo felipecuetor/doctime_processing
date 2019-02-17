@@ -101,7 +101,7 @@ public class Dblp_Crawler_Controller_Jour {
 			 * are fetched and then the crawler starts following links which are found in
 			 * these pages
 			 */
-			controller.addSeed("https://dblp.org/db/journals/");
+			controller.addSeed("https://dblp.org/db/journals/?pos=3020");
 
 			/*
 			 * Start the crawl. This is a blocking operation, meaning that your code will

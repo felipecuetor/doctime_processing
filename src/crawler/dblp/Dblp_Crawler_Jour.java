@@ -24,7 +24,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import utility.Simple_data_csv_adapter;
 
 public class Dblp_Crawler_Jour extends WebCrawler {
-	public int pos_current = 0;
+	public int pos_current = 3020;
 
 	/**
 	 * You should implement this function to specify whether the given url should be
@@ -35,7 +35,8 @@ public class Dblp_Crawler_Jour extends WebCrawler {
 		String href = url.getURL().toLowerCase();
 		String current_page = referringPage.getWebURL().getURL();
 		int sub_dir_count = href.length() - href.replace("/", "").length();
-		if (href.contains("prefix")&&sub_dir_count>6) {
+		int sub_dir_count_current = current_page.length() - current_page.replace("/", "").length();
+		if (href.contains("prefix")|sub_dir_count>6|href.contains("index.html")|href.endsWith("index")|href.endsWith("index/")) {
 			return false;
 		}
 		if (current_page.contentEquals("https://dblp.org/db/journals/")
@@ -52,6 +53,14 @@ public class Dblp_Crawler_Jour extends WebCrawler {
 					}
 					return false;
 				}
+				if(sub_dir_count==6 && href.endsWith("/")) {
+					return true;
+				}
+				return false;
+			}
+		}
+		if(current_page.endsWith("/")&&sub_dir_count_current==6) {
+			if(href.startsWith("https://dblp.org/db/journals/")&&sub_dir_count==6) {
 				return true;
 			}
 		}
@@ -67,7 +76,7 @@ public class Dblp_Crawler_Jour extends WebCrawler {
 	public void visit(Page page) {
 		String url = page.getWebURL().getURL();
 		int sub_dir_count = url.length() - url.replace("/", "").length();
-		if (url.startsWith("https://dblp.org/db/journals/") && sub_dir_count == 6) {
+		if (url.startsWith("https://dblp.org/db/journals/") && sub_dir_count == 6 && url.endsWith("html")) {
 			if (!url.contains("pos=")) {
 				HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 				Map<String, String> metaDataMap = htmlParseData.getMetaTags();
@@ -75,7 +84,7 @@ public class Dblp_Crawler_Jour extends WebCrawler {
 				Document doc = Jsoup.parse(pureHTML);
 				Simple_data_csv_adapter adapter = new Simple_data_csv_adapter();
 				try {
-					String context = doc.select("h1").first().text();
+					String context = adapter.clean(doc.select("h1").first().text());
 					Elements event_list = doc.select("ul.publ-list");
 					Iterator iter_events = event_list.iterator();
 					while (iter_events.hasNext()) {

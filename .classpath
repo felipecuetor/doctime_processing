@@ -22,5 +22,12 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/libs/byte-buddy-1.8.15.jar"/>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/libs/commons-exec-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/libs/guava-25.0-jre.jar"/>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/libs/okhttp-3.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/libs/okio-1.14.0.jar"/>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/client-combined-3.141.59.jar"/>
+	<classpathentry kind="lib" path="C:/software/Eclipse_Workspace/WebSemantica_Proyecto/lib/selenium/client-combined-3.141.59-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

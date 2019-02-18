@@ -19,6 +19,7 @@ public class Doaj_Crawler_Controller {
 	
 	public Doaj_Crawler_Controller() {
 		try {
+			System.setProperty("webdriver.firefox.marionette","C:\\geckodriver.exe");
 			String columns = "title,authors,date,context,external_reference,url";
 			String path = "../data/doaj_output.csv";
 			String str = columns + "\n";
@@ -50,7 +51,7 @@ public class Doaj_Crawler_Controller {
 			 * You can set the maximum crawl depth here. The default value is -1 for
 			 * unlimited depth
 			 */
-			config.setMaxDepthOfCrawling(2);
+			config.setMaxDepthOfCrawling(1);
 
 			/*
 			 * You can set the maximum number of pages to crawl. The default value is -1 for
@@ -71,7 +72,7 @@ public class Doaj_Crawler_Controller {
 			 * If your proxy also needs authentication: config.setProxyUsername(username);
 			 * config.getProxyPassword(password);
 			 */
-
+			
 			/*
 			 * This config parameter can be used to set your crawl to be resumable (meaning
 			 * that you can resume the crawl from a previously interrupted/crashed crawl).

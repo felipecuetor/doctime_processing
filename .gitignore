@@ -79,3 +79,5 @@ local.properties
 .scala_dependencies
 .worksheet
 /target/
+lib/
+pyScript/selenium_doaj_py/chromedriver.exe

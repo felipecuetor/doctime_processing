@@ -11,15 +11,18 @@ public class Cleaning_Adapter {
 		try (BufferedReader br = new BufferedReader(new FileReader("../data/" + original_name))) {
 			String path = "../data_clean/" + "clean_" + original_name;
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
-
 			String line;
 			String columns = br.readLine();
-			writer.append(columns);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+			writer.append(columns+"\n");
+			writer.close();
+			
 			while ((line = br.readLine()) != null) {
 				String clean_line = clean_line(line);
 				String str = clean_line;
-				writer.append(str);
+				writer = new BufferedWriter(new FileWriter(path, true));
+				writer.append(str+"\n");
+				writer.close();
 			}
 
 			writer.close();
@@ -36,11 +39,11 @@ public class Cleaning_Adapter {
 		}
 		try {
 			String title = column_split[0];
-			String authors = column_split[0];
-			String date = column_split[0];
-			String context = column_split[0];
-			String external_references = column_split[0];
-			String url = column_split[0];
+			String authors = column_split[1];
+			String date = column_split[2];
+			String context = column_split[3];
+			String external_references = column_split[4];
+			String url = column_split[5];
 
 			title = remove_string_inconsistencies(title);
 			authors = remove_string_inconsistencies(authors);
@@ -49,9 +52,8 @@ public class Cleaning_Adapter {
 			external_references = external_references.replace("Journal Title<#><#> ", "journal:");
 			external_references = remove_string_inconsistencies(external_references);
 
-			String resp = title + "," + authors + "," + date + "," + context + "," + external_references + "," + url
-					+ "\n";
-			return "resp";
+			String resp = title + "," + authors + "," + date + "," + context + "," + external_references + "," + url;
+			return resp;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

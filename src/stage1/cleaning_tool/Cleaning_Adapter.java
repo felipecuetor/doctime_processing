@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 
 public class Cleaning_Adapter {
 	public String clean(String original_name) {
@@ -49,7 +51,7 @@ public class Cleaning_Adapter {
 			String url = column_split[5];
 
 			title = remove_string_inconsistencies(title);
-			authors = remove_string_inconsistencies(authors);
+			authors = remove_string_inconsistencies(authors).toLowerCase();
 			context = context.replace("LCC Subject Category<#><#> ", "");
 			context = remove_string_inconsistencies(context);
 			external_references = external_references.replace("Journal Title<#><#> ", "journal:");
@@ -67,16 +69,17 @@ public class Cleaning_Adapter {
 	public String remove_string_inconsistencies(String original) {
 		String s = original;
 	    s = s.replaceAll("[ËÈÍÎ]","e");
-	    s = s.replaceAll("[˚˘]","u");
-	    s = s.replaceAll("[ÔÓ]","i");
-	    s = s.replaceAll("[‡‚]","a");
-	    s = s.replaceAll("‘","o");
+	    s = s.replaceAll("[˚˘˙]","u");
+	    s = s.replaceAll("[ÔÓÌ]","i");
+	    s = s.replaceAll("[‡‚·]","a");
+	    s = s.replaceAll("[‘Û]","o");
 
-	    s = s.replaceAll("[»… À]","E");
-	    s = s.replaceAll("[€Ÿ]","U");
-	    s = s.replaceAll("[œŒ]","I");
-	    s = s.replaceAll("[¿¬]","A");
-	    s = s.replaceAll("‘","O");
+	    s = s.replaceAll("[»… À…]","E");
+	    s = s.replaceAll("[€Ÿ⁄]","U");
+	    s = s.replaceAll("[œŒÕ]","I");
+	    s = s.replaceAll("[¿¬¡]","A");
+	    s = s.replaceAll("[‘”]","O");
+	    s = s.replaceAll("Ê","ae");
 	    String resp = s;
 		resp = resp.replace(".", "");
 		resp = resp.replace("<#><#>", "");
@@ -85,9 +88,8 @@ public class Cleaning_Adapter {
 		resp = resp.replace("\"", "");
 		resp = resp.replace("\\?", "");
 		resp = resp.replace("!", "");
-		resp = resp.toLowerCase();
-
-
+		resp = Normalizer.normalize(resp, Form.NFKC);
+		resp = resp.replaceAll("[^\\p{ASCII}]", "");
 
 		return resp;
 

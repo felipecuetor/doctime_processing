@@ -34,6 +34,11 @@ public class DOCTIME {
 
 	private Repository rep;
 	public final static String NAMESPACE;
+	public final static String DESCRIPTION_NAMESPACE;
+	public final static String LOCATION_NAMESPACE;
+	public final static String DOCUMENT_NAMESPACE;
+	public final static String CONFERENCE_NAMESPACE;
+	public final static String JOURNAL_NAMESPACE;
 	public final static IRI ONTOLOGY_IRI;
 	private ValueFactory f;
 	// Classes
@@ -76,35 +81,42 @@ public class DOCTIME {
 	static {
 		ValueFactory f = SimpleValueFactory.getInstance();
 		NAMESPACE = "http://172.24.101.57/";
+		DESCRIPTION_NAMESPACE = NAMESPACE+"ontology_description#";
+		LOCATION_NAMESPACE = NAMESPACE+"locations/";
+		DOCUMENT_NAMESPACE = NAMESPACE+"documents/";
+		
+		CONFERENCE_NAMESPACE = NAMESPACE+"all_conference_ontology#";
+		JOURNAL_NAMESPACE = NAMESPACE+"all_journal_ontology#";
+		
 		ONTOLOGY_IRI = f.createIRI(NAMESPACE);
-		DOCUMENT = f.createIRI(NAMESPACE, "Document");
-		AUTHOR = f.createIRI(NAMESPACE, "Author");
-		CONTEXT = f.createIRI(NAMESPACE, "Context");
-		JOURNAL = f.createIRI(NAMESPACE, "Journal");
-		CONFERENCE = f.createIRI(NAMESPACE, "Conference");
+		DOCUMENT = f.createIRI(DESCRIPTION_NAMESPACE, "Document");
+		AUTHOR = f.createIRI(DESCRIPTION_NAMESPACE, "Author");
+		CONTEXT = f.createIRI(DESCRIPTION_NAMESPACE, "Context");
+		JOURNAL = f.createIRI(DESCRIPTION_NAMESPACE, "Journal");
+		CONFERENCE = f.createIRI(DESCRIPTION_NAMESPACE, "Conference");
 
-		LOCATION = f.createIRI(NAMESPACE, "Location");
-		CITY = f.createIRI(NAMESPACE, "City");
-		COUNTRY= f.createIRI(NAMESPACE, "Country");
+		LOCATION = f.createIRI(DESCRIPTION_NAMESPACE, "Location");
+		CITY = f.createIRI(DESCRIPTION_NAMESPACE, "City");
+		COUNTRY= f.createIRI(DESCRIPTION_NAMESPACE, "Country");
 
-		TOOKPLACEIN = f.createIRI(NAMESPACE, "tookPlaceIn");
-		PUBLISHEDIN = f.createIRI(NAMESPACE, "publishedIn");
-		LOCATEDINSIDE= f.createIRI(NAMESPACE, "locatedInside");
+		TOOKPLACEIN = f.createIRI(DESCRIPTION_NAMESPACE, "tookPlaceIn");
+		PUBLISHEDIN = f.createIRI(DESCRIPTION_NAMESPACE, "publishedIn");
+		LOCATEDINSIDE= f.createIRI(DESCRIPTION_NAMESPACE, "locatedInside");
 
-		WRITTENBY = f.createIRI(NAMESPACE, "writtenBy");
-		PROPOGATEDBY= f.createIRI(NAMESPACE, "propogatedBy");
-		REFERENCES= f.createIRI(NAMESPACE, "references");
-		ISPEER = f.createIRI(NAMESPACE, "isPeer");
-		TITLEREFERENCESTOPIC = f.createIRI(NAMESPACE, "titleReferencesTopic");
+		WRITTENBY = f.createIRI(DESCRIPTION_NAMESPACE, "writtenBy");
+		PROPOGATEDBY= f.createIRI(DESCRIPTION_NAMESPACE, "propogatedBy");
+		REFERENCES= f.createIRI(DESCRIPTION_NAMESPACE, "references");
+		ISPEER = f.createIRI(DESCRIPTION_NAMESPACE, "isPeer");
+		TITLEREFERENCESTOPIC = f.createIRI(DESCRIPTION_NAMESPACE, "titleReferencesTopic");
 
-		TITLE = f.createIRI(NAMESPACE, "title");
-		URL = f.createIRI(NAMESPACE, "url");
-		DOI = f.createIRI(NAMESPACE, "doi");
-		PUBLISHINGDATE = f.createIRI(NAMESPACE, "publishingDate");
-		NAME = f.createIRI(NAMESPACE, "name");
-		SUBJECT = f.createIRI(NAMESPACE, "subject");
-		ISSN = f.createIRI(NAMESPACE, "issn");
-		ISBN= f.createIRI(NAMESPACE, "isbn");
+		TITLE = f.createIRI(DESCRIPTION_NAMESPACE, "title");
+		URL = f.createIRI(DESCRIPTION_NAMESPACE, "url");
+		DOI = f.createIRI(DESCRIPTION_NAMESPACE, "doi");
+		PUBLISHINGDATE = f.createIRI(DESCRIPTION_NAMESPACE, "publishingDate");
+		NAME = f.createIRI(DESCRIPTION_NAMESPACE, "name");
+		SUBJECT = f.createIRI(DESCRIPTION_NAMESPACE, "subject");
+		ISSN = f.createIRI(DESCRIPTION_NAMESPACE, "issn");
+		ISBN= f.createIRI(DESCRIPTION_NAMESPACE, "isbn");
 	}
 
 	public void write_ontology_documentation() {

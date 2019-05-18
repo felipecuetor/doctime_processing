@@ -19,8 +19,8 @@ public class CSV_To_Ontology_Controller {
 	private HashMap<String, Object[]> journal_list;
 	private HashMap<String, Object[]> conference_list;
 	private CSV_To_Total_Ontology_Adapter csv_ontology_adapter;
-	private CSV_To_Total_Ontology_Adapter csv_journal_adapter;
-	private CSV_To_Total_Ontology_Adapter csv_conference_adapter;
+	private CSV_To_Ontology_Context_Adapter csv_journal_adapter;
+	private CSV_To_Ontology_Context_Adapter csv_conference_adapter;
 	private CSV_To_Total_Ontology_Adapter csv_refrence_adapter;
 	private NLP_Analyzer nlp_analyzer;
 	private String document_id_hex;
@@ -33,8 +33,8 @@ public class CSV_To_Ontology_Controller {
 	public CSV_To_Ontology_Controller() {
 		nlp_analyzer = new NLP_Analyzer();
 		csv_ontology_adapter = new CSV_To_Total_Ontology_Adapter();
-		csv_journal_adapter = new CSV_To_Total_Ontology_Adapter();
-		csv_conference_adapter = new CSV_To_Total_Ontology_Adapter();
+		csv_journal_adapter = new CSV_To_Ontology_Context_Adapter();
+		csv_conference_adapter = new CSV_To_Ontology_Context_Adapter();
 		csv_conference_adapter.init_location_adapter();
 		journal_list = new HashMap<String, Object[]>();
 		conference_list = new HashMap<String, Object[]>();
@@ -44,7 +44,7 @@ public class CSV_To_Ontology_Controller {
 	public void begin_ontology_generation() {
 		System.out.println("Starting csv to ontology converter...");
 		try (BufferedReader br = new BufferedReader(new FileReader("../data_final/unified_doaj_arxiv_ceur_dblp.csv"))) {
-			CSV_To_Total_Ontology_Adapter emptyOntologyPrinter = new CSV_To_Total_Ontology_Adapter();
+			DOCTIME emptyOntologyPrinter = new DOCTIME();
 			emptyOntologyPrinter.write_ontology_documentation();
 			emptyOntologyPrinter.end_document("../data_web/"+"ontology_description");
 			String columns = br.readLine();

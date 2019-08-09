@@ -130,6 +130,9 @@ public class DOCTIME {
 			conn.add(CONTEXT, RDF.TYPE, RDFS.CLASS);
 			conn.add(JOURNAL, RDF.TYPE, RDFS.CLASS);
 			conn.add(CONFERENCE, RDF.TYPE, RDFS.CLASS);
+			conn.add(CITY, RDF.TYPE, RDFS.CLASS);
+			conn.add(COUNTRY, RDF.TYPE, RDFS.CLASS);
+			conn.add(LOCATION, RDF.TYPE, RDFS.CLASS);
 			conn.add(JOURNAL, RDFS.SUBCLASSOF, CONTEXT);
 			conn.add(CONFERENCE, RDFS.SUBCLASSOF, CONTEXT);
 
@@ -230,6 +233,13 @@ public class DOCTIME {
 					f.createLiteral("Numero unico de identificacion del contexto (Journal o Conference)."));
 			conn.add(ISBN, RDFS.COMMENT,
 					f.createLiteral("    Numero unico de identificacion del contexto (Journal o Conference). "));
+		
+			conn.add(CITY, RDFS.COMMENT,
+					f.createLiteral("Una ciudad dentro de un pais en algun lugar del mundo"));
+			conn.add(COUNTRY, RDFS.COMMENT,
+					f.createLiteral("Es un pais/nacion del mundo. Contiene ciudades dentro de si."));
+			conn.add(LOCATION, RDFS.COMMENT,
+					f.createLiteral("Represtenta cualquier ubicacion en el mundo. Puede ser una ciudad, un pais, una peninsula, una isla, un continente, etc."));
 		}
 	}
 

@@ -35,23 +35,24 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class Dbpedia_Spotlight_Integrator {
+public class Getty_Integrator {
 	private JSONParser parser;
 
 	public static void main(String[] args) {
-		Dbpedia_Spotlight_Integrator integrator = new Dbpedia_Spotlight_Integrator();
+		Getty_Integrator integrator = new Getty_Integrator();
+		integrator.queryIterator();
 	}
 
-	public Dbpedia_Spotlight_Integrator() {
-		parser = new JSONParser();
-		queryIterator();
+	public Getty_Integrator() {
+//		parser = new JSONParser();
+//		queryIterator();
 	}
 
 	public void queryIterator() {
-		Repository rep = new SPARQLRepository("http://172.24.101.57/blazegraph/namespace/kb/sparql");
+		Repository rep = new SPARQLRepository("http://vocab.getty.edu/sparql");
 		rep.init();
 		try (RepositoryConnection con = rep.getConnection()) {
-			int currentTriple = 100000;
+			int currentTriple = 0;
 			boolean end_of_triples = false;
 			while (!end_of_triples) {
 				TupleQueryResult resp = querySPARQL(con, currentTriple);
@@ -59,67 +60,29 @@ public class Dbpedia_Spotlight_Integrator {
 				if(!resp.hasNext()) {
 					end_of_triples = true;
 				}
-
+				System.out.println(resp.getBindingNames());
 				while (resp.hasNext()) {
 					BindingSet current_doc = resp.next();
-					String title = current_doc.getValue("title").toString();
-					String iri = current_doc.getValue("iri").toString();
-					dbpediaEnrichment(title, iri, con);
+					String country = current_doc.getValue("country").toString();
+					String country_name = current_doc.getValue("label").toString();
+					System.out.println(country_name);
 				}
 
 				currentTriple += 50;
 			}
 		}
 	}
-
-	public void dbpediaEnrichment(String title, String iri, RepositoryConnection con) {
-		URI uri;
-		CloseableHttpResponse response = null;
-		try {
-			uri = new URIBuilder().setScheme("https").setHost("api.dbpedia-spotlight.org").setPath("/en/annotate")
-					.setParameter("text", title).setParameter("confidence", "0.45").build();
-			System.out.println(uri);
-			HttpGet httpget = new HttpGet(uri);
-			httpget.addHeader("accept", "application/json");
-			CloseableHttpClient httpclient = HttpClients.createDefault();
-			response = httpclient.execute(httpget);
-			System.out.println(response.getStatusLine());
-			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				result.append(line);
-			}
-			JSONObject jsonObject = (JSONObject) parser.parse(result.toString());
-
-            JSONArray resources = (JSONArray) jsonObject.get("Resources");
-            Iterator resources_iterator = resources.iterator();
-            while(resources_iterator.hasNext()) {
-            	JSONObject detected_attribute = (JSONObject) resources_iterator.next();
-            	String topic_uri = (String) detected_attribute.get("@URI");
-            	constructSPARQL(con, iri, topic_uri);
-            }
-			
-			response.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				response.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-	}
 	
 	public TupleQueryResult querySPARQL(RepositoryConnection con, int currentTriple) {
 		String queryString = "";
-		queryString += "PREFIX : <http://172.24.101.57/ontology_description#>";
-		queryString += "SELECT ?title ?iri ";
-		queryString += "WHERE{ ?iri :title ?title }";
-		queryString += "ORDER BY ?title LIMIT 50 OFFSET " + currentTriple;
+		queryString += "PREFIX : <http://vocab.getty.edu/ontology#> ";
+		queryString += "SELECT * ";
+		queryString += "WHERE{\r\n" + 
+				"\r\n" + 
+				"  ?country gvp:prefLabelGVP [xl:literalForm ?label];\r\n" + 
+				"\r\n" + 
+				"     gvp:placeType [skos:prefLabel \"republics\"@en]} ";
+		//queryString += "ORDER BY ?title LIMIT 50";
 		TupleQuery graphQuery = con.prepareTupleQuery(queryString);
 		// con.prepareGraphQuery(QueryLanguage.SPARQL, queryString);
 		TupleQueryResult resp = graphQuery.evaluate();
